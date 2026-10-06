@@ -1,0 +1,34 @@
+{
+  "name": "anjing-music-x",
+  "version": "0.1.0",
+  "private": true,
+  "description": "安静的音乐客户端 · macOS / Windows",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 1427 --strictPort",
+    "tauri": "tauri",
+    "desktop": "tauri dev",
+    "desktop:build": "tauri build",
+    "verify": "npm run build && node scripts/validate-release.mjs --versions-only",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "2.12.0",
+    "@tauri-apps/plugin-process": "2.4.0",
+    "@tauri-apps/plugin-updater": "2.13.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "@tauri-apps/cli": "2.12.1",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "typescript": "~5.9.3",
+    "vite": "8.3.3"
+  }
+}

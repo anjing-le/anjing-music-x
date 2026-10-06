@@ -1,0 +1,169 @@
+name: Build draft release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Stable version without the v prefix
+        required: true
+        type: string
+      notes:
+        description: User-visible release notes
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: anjing-music-x-release
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.metadata.outputs.version }}
+      tag: ${{ steps.metadata.outputs.tag }}
+      sha: ${{ steps.metadata.outputs.sha }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+      - name: Validate release source and metadata
+        id: metadata
+        env:
+          REQUESTED_VERSION: ${{ inputs.version }}
+          RELEASE_NOTES: ${{ inputs.notes }}
+        run: |
+          node scripts/validate-release.mjs --release
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import fs from 'node:fs';
+          const { version } = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          const tag = `v${version}`;
+          if (process.env.GITHUB_EVENT_NAME === 'push') assert.equal(process.env.GITHUB_REF_NAME, tag, 'tag does not match source version');
+          else assert.equal(process.env.REQUESTED_VERSION, version, 'requested version does not match source');
+          const notes = process.env.RELEASE_NOTES?.trim() || `Anjing Music X ${version}`;
+          assert([...notes].length <= 8000 && !/[\u0000-\u0008\u000b-\u001f\u007f-\u009f]/u.test(notes), 'invalid release notes');
+          fs.mkdirSync('release-metadata');
+          fs.writeFileSync('release-metadata/notes.md', `${notes}\n`);
+          fs.writeFileSync('release-metadata/metadata.json', JSON.stringify({ version, tag, sha: process.env.GITHUB_SHA }));
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `version=${version}\ntag=${tag}\nsha=${process.env.GITHUB_SHA}\n`);
+          NODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-metadata
+          path: release-metadata/
+          if-no-files-found: error
+
+  build:
+    needs: prepare
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-latest
+            target: aarch64-apple-darwin
+            platform: darwin-aarch64
+            bundles: app,dmg
+          - runner: macos-latest
+            target: x86_64-apple-darwin
+            platform: darwin-x86_64
+            bundles: app,dmg
+          - runner: windows-latest
+            target: x86_64-pc-windows-msvc
+            platform: windows-x86_64
+            bundles: nsis
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@4360b52568e2003a75bf9bc1d59f33a8e3fc893c
+        with:
+          targets: ${{ matrix.target }}
+      - uses: Swatinem/rust-cache@e18b497796c12c097a38f9edb9d0641fb99eee32 # v2
+        with:
+          workspaces: src-tauri -> target
+          key: release-${{ matrix.target }}
+      - run: npm ci
+      - name: Require updater signing key
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+        run: node -e "if (!process.env.TAURI_SIGNING_PRIVATE_KEY?.trim()) throw new Error('TAURI_SIGNING_PRIVATE_KEY must be configured in GitHub Secrets')"
+      - name: Validate release version and public key
+        run: node scripts/validate-release.mjs --release --version ${{ needs.prepare.outputs.version }} --tag ${{ needs.prepare.outputs.tag }}
+      - name: Build signed updater artifacts
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        run: npm run tauri -- build --target ${{ matrix.target }} --bundles ${{ matrix.bundles }}
+      - name: Stage one platform without publishing
+        run: node scripts/validate-release.mjs --stage --platform ${{ matrix.platform }} --bundle-dir src-tauri/target/${{ matrix.target }}/release/bundle --output-dir staged
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: bundles-${{ matrix.platform }}
+          path: staged/
+          if-no-files-found: error
+
+  assemble:
+    needs: [prepare, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+      - name: Install public-key signature verifier
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y minisign
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: release-metadata
+          path: release-metadata
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: bundles-*
+          merge-multiple: true
+          path: downloaded
+      - name: Verify all three platforms and assemble one updater manifest
+        run: node scripts/validate-release.mjs --assemble --version ${{ needs.prepare.outputs.version }} --tag ${{ needs.prepare.outputs.tag }} --artifacts-dir downloaded --output-dir release --notes-file release-metadata/notes.md
+      - name: Create complete draft Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.prepare.outputs.tag }}
+          RELEASE_SHA: ${{ needs.prepare.outputs.sha }}
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          const headers = { Authorization: `Bearer ${process.env.GH_TOKEN}`, Accept: 'application/vnd.github+json' };
+          const base = `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}`;
+          const request = async (route) => fetch(`${base}${route}`, { headers });
+          const release = await request(`/releases/tags/${encodeURIComponent(process.env.RELEASE_TAG)}`);
+          assert.equal(release.status, 404, 'a release already exists for this tag; do not overwrite it');
+          let response = await request(`/git/ref/tags/${encodeURIComponent(process.env.RELEASE_TAG)}`);
+          if (response.ok) {
+            let object = (await response.json()).object;
+            while (object.type === 'tag') {
+              response = await request(`/git/tags/${object.sha}`);
+              assert(response.ok, 'could not inspect annotated tag');
+              object = (await response.json()).object;
+            }
+            assert.equal(object.type, 'commit', 'unsupported tag object');
+            assert.equal(object.sha, process.env.RELEASE_SHA, 'tag does not point at built source');
+          } else assert.equal(response.status, 404, 'could not inspect existing tag');
+          NODE
+          gh release create "$RELEASE_TAG" release/* --repo "$GITHUB_REPOSITORY" --target "$RELEASE_SHA" --title "Anjing Music X $RELEASE_TAG" --notes-file release-metadata/notes.md --draft

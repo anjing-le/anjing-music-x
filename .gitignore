@@ -1,0 +1,15 @@
+node_modules/
+dist/
+src-tauri/target/
+src-tauri/gen/
+test-results/
+playwright-report/
+qa-artifacts/
+.DS_Store
+.env
+.env.*
+*.key
+*.p12
+*.pfx
+*.cer
+*.pem
