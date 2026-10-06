@@ -1,4 +1,4 @@
-.music-root { height: 100dvh; min-height: 480px; width: 100%; display: grid; grid-template-columns: 176px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) 92px; position: relative; overflow: hidden; background: #fbfaf6 url("/textures/paper.png") repeat; }
+.music-root { height: calc(100dvh - var(--window-chrome-height, 0px)); min-height: 480px; width: 100%; display: grid; grid-template-columns: 176px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) 92px; position: relative; overflow: hidden; background: #fbfaf6 url("/textures/paper.png") repeat; }
 .music-sidebar { grid-column: 1; grid-row: 1; min-height: 0; padding: 26px 17px 12px; display: flex; flex-direction: column; background: rgba(241, 238, 227, .37); border-right: 1px solid rgba(130, 122, 106, .13); }
 .music-sidebar-brand { display: flex; align-items: center; gap: 8px; margin-bottom: 33px; font-family: var(--hand); font-size: 18px; white-space: nowrap; color: #565148; }
 .music-sidebar-brand .brand-mark { width: 31px; height: 31px; border-radius: 7px; }

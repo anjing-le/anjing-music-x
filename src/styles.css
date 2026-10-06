@@ -27,7 +27,9 @@ input:focus-visible, textarea:focus-visible { outline: none; }
 ::selection { background: #f0d788; color: #39372f; }
 h1, h2, h3, p { margin: 0; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.app-shell { min-height: 100dvh; background: #fbfaf6 url("/textures/paper.png") repeat; }
+.app-frame { --window-chrome-height: 0px; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; background: #fbfaf6 url("/textures/paper.png") repeat; }
+.app-frame[data-desktop="true"] { --window-chrome-height: 32px; }
+.app-shell { flex: 1; min-height: calc(100dvh - var(--window-chrome-height)); background: #fbfaf6 url("/textures/paper.png") repeat; }
 .paper-card { background: #fefdfb url("/textures/paper.png") repeat; }
 .paper-outline { position: relative; border: 1px solid rgba(116, 111, 99, .42); border-radius: 10px; }
 .paper-outline::after {

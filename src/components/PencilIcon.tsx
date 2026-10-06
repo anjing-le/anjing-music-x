@@ -6,7 +6,8 @@ export type IconName =
   | "download" | "refresh" | "check" | "restart" | "info"
   | "search" | "heart" | "star" | "library" | "clock" | "arrowLeft"
   | "play" | "pause" | "next" | "previous" | "queue" | "repeat" | "repeatOne"
-  | "shuffle" | "volume" | "volumeOff" | "lyrics" | "chevronUp";
+  | "shuffle" | "volume" | "volumeOff" | "lyrics" | "chevronUp"
+  | "minimize" | "maximize" | "restore";
 
 const drawings: Record<IconName, ReactNode> = {
   music: <><path d="M9 17V5l11-2v12" /><path d="M9 8l11-2" /><ellipse cx="6" cy="17.5" rx="3" ry="2.5" /><ellipse cx="17" cy="15.5" rx="3" ry="2.5" /></>,
@@ -43,6 +44,9 @@ const drawings: Record<IconName, ReactNode> = {
   volumeOff: <><path d="M3 9h4l5-4v14l-5-4H3V9zM17 9l5 6M22 9l-5 6" /></>,
   lyrics: <><path d="M5 3h14v18H5zM8 7h8M8 11h8M8 15h5" /></>,
   chevronUp: <><path d="M5 15l7-7 7 7" /></>,
+  minimize: <><path d="M5 15h14" /></>,
+  maximize: <><path d="M5 5h14v14H5z" /></>,
+  restore: <><path d="M8 8h12v12H8zM16 8V4H4v12h4" /></>,
 };
 
 export default function PencilIcon({ name, size = 20, className = "" }: {

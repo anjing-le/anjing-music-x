@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Anjing Music X",
+        "width": 520,
+        "height": 360,
+        "minWidth": 420,
+        "minHeight": 340,
+        "center": true,
+        "resizable": true,
+        "decorations": true,
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true,
+        "shadow": true,
+        "backgroundColor": "#fbfaf6"
+      }
+    ]
+  }
+}

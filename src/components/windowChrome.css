@@ -1,0 +1,71 @@
+.window-chrome {
+  position: relative;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  flex: 0 0 32px;
+  width: 100%;
+  height: 32px;
+  padding: 0 8px;
+  background: #fbfaf6 url('/textures/paper.png') repeat;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.window-chrome-mac { justify-content: flex-start; }
+.window-chrome-windows { justify-content: flex-end; }
+.window-chrome-controls { display: flex; align-items: center; gap: 4px; }
+.window-chrome-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 23px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  color: #756e61;
+  background: transparent;
+  -webkit-app-region: no-drag;
+  transition: color 110ms ease;
+}
+.window-chrome-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: url('/textures/wax-yellow.png') repeat;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 110ms ease;
+}
+.window-chrome-button .pencil-icon { position: relative; z-index: 1; }
+.window-chrome-button:hover:not(:disabled) {
+  color: #565148;
+}
+.window-chrome-button:hover:not(:disabled)::before { opacity: .42; }
+.window-chrome-close:hover:not(:disabled) {
+  color: #714c44;
+}
+.window-chrome-close::before { background-image: url('/textures/wax-coral.png'); }
+.window-chrome-close:hover:not(:disabled)::before { opacity: .68; }
+.window-chrome-button:active:not(:disabled) { transform: translateY(1px); }
+.window-chrome-button:focus-visible { outline: 2px solid #756e61; outline-offset: 1px; }
+.window-chrome-button:disabled { opacity: .5; }
+.window-chrome-error {
+  position: absolute;
+  top: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100% - 24px);
+  padding: 7px 12px;
+  border-radius: 6px;
+  background: #fbfaf6 url('/textures/paper.png') repeat;
+  color: #a56b5c;
+  font-size: 11px;
+  line-height: 1.5;
+  pointer-events: none;
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .window-chrome-button, .window-chrome-button::before { transition: none; }
+}

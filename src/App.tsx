@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
-import { fitWindow, getAppVersion, signIn } from "./desktop";
+import { fitWindow, getAppVersion, isDesktop, signIn } from "./desktop";
 import PencilIcon from "./components/PencilIcon";
 import SettingsDialog from "./components/SettingsDialog";
 import MusicWorkspace from "./music/MusicWorkspace";
+import WindowChrome from "./components/WindowChrome";
 
 export default function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -64,7 +65,9 @@ export default function App() {
   const logout = () => { setAuthenticated(false); setSettingsOpen(false); setLoginError(""); };
 
   return (
-    <div className={"app-shell " + (authenticated ? "music-shell" : "login-shell")}>
+    <div className="app-frame" data-desktop={isDesktop ? "true" : undefined}>
+      {isDesktop && <WindowChrome />}
+      <div className={"app-shell " + (authenticated ? "music-shell" : "login-shell")}>
       {authenticated ? <MusicWorkspace onOpenSettings={openSettings} onLogout={logout} /> : (
         <main className="login-layout">
           <div className="login-brand"><span className="brand-mark wax-sage"><PencilIcon name="music" size={23} /></span><span id="login-brand-name">anjing music <small>x</small></span></div>
@@ -91,6 +94,7 @@ export default function App() {
         </main>
       )}
       <SettingsDialog open={settingsOpen} onClose={closeSettings} version={version} />
+      </div>
     </div>
   );
 }
