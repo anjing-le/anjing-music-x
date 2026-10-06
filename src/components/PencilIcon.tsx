@@ -3,7 +3,10 @@ import { useId, type ReactNode } from "react";
 export type IconName =
   | "music" | "pencil" | "notebook" | "settings" | "arrowRight"
   | "eye" | "eyeOff" | "close" | "copy" | "trash" | "logout"
-  | "download" | "refresh" | "check" | "restart" | "info";
+  | "download" | "refresh" | "check" | "restart" | "info"
+  | "search" | "heart" | "star" | "library" | "clock" | "arrowLeft"
+  | "play" | "pause" | "next" | "previous" | "queue" | "repeat" | "repeatOne"
+  | "shuffle" | "volume" | "volumeOff" | "lyrics" | "chevronUp";
 
 const drawings: Record<IconName, ReactNode> = {
   music: <><path d="M9 17V5l11-2v12" /><path d="M9 8l11-2" /><ellipse cx="6" cy="17.5" rx="3" ry="2.5" /><ellipse cx="17" cy="15.5" rx="3" ry="2.5" /></>,
@@ -22,6 +25,24 @@ const drawings: Record<IconName, ReactNode> = {
   check: <><path d="M4.5 12.5l5 5L20 6.5" /></>,
   restart: <><path d="M4 8a8.5 8.5 0 111 10M4 3v5h5M12 7v5l3 2" /></>,
   info: <><circle cx="12" cy="12" r="9" /><path d="M12 11v6M12 7h.01" /></>,
+  search: <><circle cx="10.5" cy="10.5" r="6.8" /><path d="M16 16l5 5" /></>,
+  heart: <><path d="M12 20s-9-5.4-9-11a4.6 4.6 0 019-1.2A4.6 4.6 0 0121 9c0 5.6-9 11-9 11z" /></>,
+  star: <><path d="M12 3l2.9 5.8 6.4.9-4.6 4.5 1.1 6.3-5.8-3-5.8 3 1.1-6.3-4.6-4.5 6.4-.9L12 3z" /></>,
+  library: <><path d="M4 4h4v16H4zM11 4h4v16h-4zM18 5l3-1 3 15-3 1-3-15z" transform="translate(-1 0)" /></>,
+  clock: <><circle cx="12" cy="12" r="9" /><path d="M12 6v6l4 2" /></>,
+  arrowLeft: <><path d="M20 12H5M10 6l-6 6 6 6" /></>,
+  play: <><path d="M8 4.8l11 7.2-11 7.2V4.8z" /></>,
+  pause: <><path d="M8 5v14M16 5v14" /></>,
+  next: <><path d="M4 5l11 7-11 7V5zM20 5v14" /></>,
+  previous: <><path d="M20 5L9 12l11 7V5zM4 5v14" /></>,
+  queue: <><path d="M3 5h18M3 10h18M3 15h10M3 20h10M18 14l4 3-4 3v-6z" /></>,
+  repeat: <><path d="M4 8a3 3 0 013-3h13M16 2l4 3-4 3M20 16a3 3 0 01-3 3H4M8 16l-4 3 4 3" /></>,
+  repeatOne: <><path d="M4 8a3 3 0 013-3h13M16 2l4 3-4 3M20 16a3 3 0 01-3 3H4M8 16l-4 3 4 3M11 10l2-1v6M11 15h4" /></>,
+  shuffle: <><path d="M3 6h3c4 0 7 12 11 12h4M17 14l4 4-4 4M3 18h3c1.6 0 3.1-1.8 4.5-4M13.5 9c1.2-1.7 2.3-3 3.5-3h4M17 2l4 4-4 4" /></>,
+  volume: <><path d="M3 9h4l5-4v14l-5-4H3V9zM16 8a6 6 0 010 8M19 5a10 10 0 010 14" /></>,
+  volumeOff: <><path d="M3 9h4l5-4v14l-5-4H3V9zM17 9l5 6M22 9l-5 6" /></>,
+  lyrics: <><path d="M5 3h14v18H5zM8 7h8M8 11h8M8 15h5" /></>,
+  chevronUp: <><path d="M5 15l7-7 7 7" /></>,
 };
 
 export default function PencilIcon({ name, size = 20, className = "" }: {

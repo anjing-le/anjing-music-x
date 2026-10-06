@@ -1,6 +1,6 @@
 [package]
 name = "anjing-music-x"
-version = "0.1.0"
+version = "0.2.0"
 description = "Anjing Music X desktop client"
 edition = "2021"
 rust-version = "1.90"

@@ -86,38 +86,6 @@ h1, h2, h3, p { margin: 0; }
 .login-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; padding: 0 4px; font-size: 10px; color: #aaa292; }
 .login-bottom .text-button { font-size: 11px; }
 
-.workspace-shell { display: flex; flex-direction: column; }
-.app-toolbar { display: flex; align-items: center; justify-content: space-between; min-height: 70px; padding: 0 35px; }
-.app-brand { display: flex; align-items: center; gap: 11px; }
-.toolbar-actions { display: flex; align-items: center; gap: 16px; }
-.session-status { display: inline-flex; align-items: center; gap: 6px; color: #928a7b; font-size: 10px; }
-.session-status > span { width: 5px; height: 5px; background: #98a888; border-radius: 50%; }
-.workspace-main { width: min(100%, 840px); margin: auto; padding: 28px 35px 20px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
-.workspace-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 17px; gap: 12px; }
-.workspace-heading h1 { margin-top: 1px; font-family: var(--hand); font-size: 29px; font-weight: 500; line-height: 1.2; }
-.workspace-heading .button { font-size: 14px; min-height: 36px; padding: 7px 12px; }
-.empty-workspace { min-height: 338px; padding: 39px 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-.empty-mark { display: grid; place-items: center; width: 64px; height: 61px; margin-bottom: 22px; border-radius: 15px 12px 16px 13px; color: #6c6044; }
-.empty-workspace h2 { font-family: var(--hand); font-size: 26px; font-weight: 500; line-height: 1.4; }
-.empty-workspace p { margin-top: 8px; color: #938a7a; font-size: 12px; line-height: 1.6; }
-.empty-workspace .button { margin-top: 23px; min-height: 39px; font-size: 15px; }
-.workspace-footnote { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 13px; color: #9b9385; font-size: 10px; }
-.workspace-footnote > span { display: inline-flex; gap: 5px; align-items: center; }
-.shortcut-hint kbd { font-family: inherit; min-width: 16px; height: 17px; padding: 0 3px; border: 1px solid #ddd8cc; border-radius: 3px; display: inline-grid; place-items: center; color: #a09a8d; }
-.shortcut-hint > span { margin-left: 3px; }
-.app-footer { display: flex; align-items: center; justify-content: space-between; padding: 9px 35px 15px; font-size: 10px; color: #aaa292; }
-.note-card { display: flex; flex-direction: column; min-height: 338px; }
-.note-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 10px 15px 11px; }
-.note-title { display: flex; align-items: center; gap: 8px; color: #81785f; }
-.note-title h2 { font-family: var(--hand); font-size: 18px; font-weight: 500; }
-.note-card textarea { display: block; flex: 1; width: 100%; min-height: 220px; padding: 18px 21px; resize: vertical; border: 0; background: transparent; font-size: 14px; line-height: 1.9; color: #5a5449; }
-.note-card textarea::placeholder { color: #aaa292; }
-.note-card textarea:focus-visible { outline: 2px solid rgba(116, 111, 99, .36); outline-offset: -7px; border-radius: 10px; }
-.note-footer { display: flex; align-items: center; justify-content: space-between; padding: 9px 18px; font-size: 10px; color: #a09888; }
-.note-footer::after { top: 0; bottom: auto; }
-.note-footer > div { display: flex; gap: 18px; }
-.note-footer .text-button { font-size: 11px; }
-
 .paper-modal { width: 460px; max-width: calc(100vw - 40px); max-height: calc(100dvh - 48px); padding: 0; overflow-y: auto; color: var(--ink); background: #fbfaf6 url("/textures/paper.png") repeat; box-shadow: 0 9px 25px rgba(71, 61, 43, .09); }
 .paper-modal::backdrop { background: rgba(70, 65, 53, .17); }
 .modal-content { padding: 25px; }
@@ -148,46 +116,20 @@ h1, h2, h3, p { margin: 0; }
 .settings-about { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 23px; padding-top: 17px; font-size: 10px; color: #a49a87; }
 .settings-about::after { top: 0; bottom: auto; }
 .settings-about .brand-name { font-size: 18px; color: #807561; }
-.confirm-modal { width: 385px; }
-.confirm-modal .modal-heading { margin-bottom: 14px; }
-.confirm-modal .modal-heading h2 { font-size: 24px; }
-.confirmation-copy { color: #958a76; font-size: 12px; line-height: 1.9; }
-.confirmation-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
-.confirmation-actions .button { min-height: 37px; font-size: 15px; }
-.toast { position: fixed; z-index: 10; bottom: 26px; left: 50%; max-width: calc(100% - 40px); padding: 11px 17px; border-radius: 7px; color: #786d57; background: #fcfaf1 url("/textures/paper.png") repeat; font-size: 12px; opacity: 0; visibility: hidden; transform: translate(-50%, 4px); transition: opacity 130ms ease, transform 130ms ease, visibility 130ms ease; pointer-events: none; }
-.toast-visible { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
 
 @media (max-width: 620px) {
-  .app-toolbar { padding: 0 22px; min-height: 63px; }
-  .session-status { display: none; }
-  .workspace-main { padding: 25px 22px 18px; }
-  .workspace-heading h1 { font-size: 27px; }
-  .workspace-heading .button { font-size: 13px; }
-  .empty-workspace { min-height: 320px; padding: 32px 17px; }
-  .empty-workspace h2 { font-size: 25px; }
-  .app-footer { padding: 7px 22px 15px; }
-  .shortcut-hint { display: none !important; }
   .modal-content { padding: 22px; }
 }
 @media (max-width: 420px) {
   .login-heading h1 { font-size: 22px; }
 }
 @media (max-height: 620px) {
-  .app-toolbar { min-height: 58px; }
-  .workspace-main { padding-top: 20px; padding-bottom: 12px; }
-  .workspace-heading { margin-bottom: 12px; }
-  .note-card { min-height: 280px; }
-  .note-card textarea { min-height: 170px; }
-  .app-footer { padding-bottom: 10px; }
 }
 @media (max-height: 550px) {
   .login-shell { padding: 22px 20px; }
   .login-brand { margin-bottom: 14px; }
   .login-card { padding-top: 22px; padding-bottom: 18px; }
   .login-heading { margin-bottom: 18px; }
-  .workspace-main { padding-top: 20px; }
-  .empty-workspace { min-height: 260px; padding: 25px; }
-  .empty-mark { margin-bottom: 14px; width: 55px; height: 52px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
