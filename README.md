@@ -65,6 +65,8 @@ qa-artifacts/audio-capture/QQMusicAudioCapture --duration 30 --output "$HOME/Mus
 
 ## 验收状态
 
+0.2.2 精简了登录页文案，仅显示品牌、密码框、进入按钮与设置图标；登录窗口为 520×360，密码、键盘交互和播放器布局保持原样。
+
 0.2.1 已实现本地导入、持久化和逐首移除副本。TypeScript、前端构建与版本一致性通过；10 项 E2E 通过，覆盖真实音频播放、重载恢复、收藏/最近记录、重复导入、损坏文件批次拒绝以及移除当前曲目的队列与缓存行为。自制 WAV、FLAC、MP3、M4A/AAC、OGG/Vorbis 均在 Chromium 中完成真实解码与播放，不能据此保证所有编码在两种系统 WebView 中可用。
 
 本机 macOS Apple Silicon 0.2.1 app 已构建并通过 ad-hoc 签名完整性检查。真实 QQ 音乐播放输出已完成内录、私人飞书上传、下载和 SHA-256 一致性验证；回下载的 WAV 在此 macOS app 中导入、播放到 19 秒，关闭重启后仍保留，并再次播放到 13 秒。Windows 原生导入与持久化尚未实测，飞书自动同步尚未接入。

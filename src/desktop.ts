@@ -8,8 +8,8 @@ export async function fitWindow(authenticated: boolean): Promise<void> {
   if (!isDesktop) return;
   const { getCurrentWindow, LogicalSize } = await import('@tauri-apps/api/window');
   const window = getCurrentWindow();
-  await window.setMinSize(new LogicalSize(authenticated ? 820 : 420, authenticated ? 600 : 520));
-  await window.setSize(new LogicalSize(authenticated ? 1080 : 520, authenticated ? 720 : 560));
+  await window.setMinSize(new LogicalSize(authenticated ? 820 : 420, authenticated ? 600 : 320));
+  await window.setSize(new LogicalSize(authenticated ? 1080 : 520, authenticated ? 720 : 360));
   await window.center();
 }
 
