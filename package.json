@@ -1,6 +1,6 @@
 {
   "name": "anjing-music-x",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "description": "安静的音乐客户端 · macOS / Windows",
   "type": "module",
