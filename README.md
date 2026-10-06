@@ -35,6 +35,8 @@ npm run test:e2e   # 登录、键盘与基础交互验收
 
 签名私钥必须保存在仓库外，并配置到 GitHub Actions Secrets 的 `TAURI_SIGNING_PRIVATE_KEY`，密码为 `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`（本次原型使用空密码）。客户端仅包含公钥。更新验签不能关闭。[官方说明](https://v2.tauri.app/plugin/updater/)
 
+本次已创建独立密钥并配置 GitHub Secret；本地私钥位于 `~/.local/share/anjing-music-x/updater.key`，目录权限 700、文件权限 600，请单独备份，不能提交到仓库。手动运行 release workflow 会先生成完整三平台的草稿 Release；发布草稿后才会进入 stable OTA。
+
 平台代码签名与 OTA 签名相互独立。当前原型 macOS 使用 ad-hoc 签名，Windows 尚未配置 Authenticode；正式系统信任体验需要后续配置平台证书，仍可使用 GitHub 分发。
 
 ## 验收状态
@@ -43,4 +45,6 @@ npm run test:e2e   # 登录、键盘与基础交互验收
 
 已验证 TypeScript/前端构建、版本一致性、macOS 原生 cargo check / fmt / test、浏览器密码错误与正确进入、弹窗焦点恢复、清空确认和 680×560 最小布局。纹理固定 seed 重生成哈希一致，中文标题字体本地子集约 59 KB。
 
-GitHub CI、原生打包运行和实际更新需要分别验证。尚无正式发布版本，Windows 真机运行、从旧版升级到新版的完整 OTA、平台证书签名尚未验证。
+本地 macOS debug `.app` 已打包并运行，已观察原生密码拒绝/进入、窗口尺寸调整和 GitHub 更新不可用时的失败反馈；已生成 updater archive 与签名文件，这还不是完整升级验收。
+
+GitHub CI 和实际更新需要分别验证。尚无正式发布版本，Windows 真机运行、从旧版升级到新版的完整 OTA、平台证书签名尚未验证。
